@@ -1,0 +1,168 @@
+$md:1024px;
+
+
+$easing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+
+@mixin abs-full-size() {
+    // position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+@mixin abs-center() {
+    // position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@mixin hover() {
+    @media (min-width: $md) {
+        @content;
+    }
+}
+
+
+
+a {
+    text-decoration: none;
+}
+
+.pc {
+    display: block !important;
+
+    @media (max-width: $md) {
+        display: none !important;
+    }
+}
+
+.mobile {
+    display: none !important;
+
+    @media (max-width: $md) {
+        display: block !important;
+    }
+
+
+}
+
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(-360deg);
+    }
+}
+
+@mixin triangle($size, $color, $direction) {
+    height: 0;
+    width: 0;
+
+    @if ($direction==up) or ($direction==down) or ($direction==right) or ($direction==left) {
+        border-color: transparent;
+        border-style: solid;
+        border-width: $size / 2;
+
+        @if $direction==up {
+            border-bottom-color: $color;
+        }
+
+        @else if $direction==right {
+            border-left-color: $color;
+        }
+
+        @else if $direction==down {
+            border-top-color: $color;
+        }
+
+        @else if $direction==left {
+            border-right-color: $color;
+        }
+    }
+
+    @else if ($direction==up-right) or ($direction==up-left) {
+        border-top: $size solid $color;
+
+        @if $direction==up-right {
+            border-left: $size solid transparent;
+        }
+
+        @else if $direction==up-left {
+            border-right: $size solid transparent;
+        }
+    }
+
+    @else if ($direction==down-right) or ($direction==down-left) {
+        border-bottom: $size solid $color;
+
+        @if $direction==down-right {
+            border-left: $size solid transparent;
+        }
+
+        @else if $direction==down-left {
+            border-right: $size solid transparent;
+        }
+    }
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    // align-items: center;
+
+
+    @media (max-width: $md) {
+        flex-wrap: wrap;
+    }
+
+    @for $i from 0 through 100 {
+        &.row-pad-#{$i} {
+            $margin: $i * -1 * 1px;
+            margin: 0px $margin;
+
+
+            >.col {
+                padding: $i * 1px;
+            }
+        }
+    }
+
+    .col {
+        @for $i from 0 through 100 {
+            &.col-#{$i} {
+                $p: round(percentage($i/100));
+                flex: 0 $p;
+                min-width: $p;
+
+                // @media (max-width: $md) {
+                //     flex: 0 100%;
+                //     max-width: 100%;
+                // }
+                @if $i==0 {
+                    display: none;
+                }
+            }
+        }
+
+        @media (max-width: $md) {
+            @for $i from 0 through 100 {
+                &.col-md-#{$i} {
+                    $p: round(percentage($i/100));
+                    flex: 0 $p;
+                    min-width: $p;
+
+                    @if $i==0 {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}
