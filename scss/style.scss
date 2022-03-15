@@ -195,17 +195,16 @@ p {
         color: #1a1a1a;
       }
 
-      &.fixed-left {
-        position: fixed;
-        right: initial;
-      }
+      // &.fixed-left {
+      //   position: fixed;
+      //   animation: fadeIn 0s 0s ease both 1;
+      // }
 
       &.fixed-right {
         position: fixed;
-        left: initial;
       }
 
-      &.is-last {
+      &.is-mask {
         &:before {
           content: "";
           // display: none;
@@ -506,7 +505,7 @@ p {
   z-index: 99;
   height: 100%;
   background-color: #fff;
-  padding: 4px 0 0px 4px;
+  padding: 3.5px 0 0px 4px;
   z-index: 999;
 
   @media (max-width: $md) {
@@ -4080,15 +4079,46 @@ p {
   animation-name: member-ani-even;
 }
 
+.color06 {
+  background: linear-gradient(to right, #2d376f, #f2b040);
+}
+
+.color05 {
+  background: linear-gradient(to right, #bb4e9c, #ec195b);
+}
+
+.color04 {
+  background: linear-gradient(to right, #eacc64, #85dffe);
+}
+
+.color03 {
+  background: linear-gradient(to bottom, #e0c3dc, #bd6fad);
+}
+
+.color02 {
+  background: linear-gradient(to right, #fbcf57, #d97791);
+}
+
+.color01 {
+  background: linear-gradient(to bottom, #fff2ef, #f6998d);
+}
+
 .card-container {
   display: block;
   white-space: nowrap;
   flex-wrap: nowrap;
   align-items: center;
   height: 100%;
-
   padding: 5vh 2vw 10vh 2vw;
-  // perspective-origin: center center;
+
+  @media (max-width: 768px) {
+    display: block;
+    height: 100%;
+    padding: 1% 0%;
+    position: relative;
+    z-index: 2;
+    white-space: initial;
+  }
 
   .card {
     display: inline-block;
@@ -4108,6 +4138,19 @@ p {
 
     @media (max-width: 1200px) {
       min-width: 80px;
+    }
+
+    @media (max-width: 768px) {
+      overflow: visible;
+      position: relative;
+      transition: 0.3s ease all;
+      background-color: transparent;
+      border: none;
+      min-width: 0;
+      width: 100%;
+      height: 10%;
+      margin: 0 0 -5% 0;
+      perspective: 700px;
     }
 
     .card-wrap {
@@ -4134,18 +4177,20 @@ p {
         transition: 0.3s ease all;
         visibility: visible;
 
-        &.ani-down {
-        }
         &.animated {
           transition: 1s ease all;
-          &.ani-down {
+          transform: translate(0, -200%);
+          &.ani-reverse {
             transform: translate(0, 200%);
           }
-          transform: translate(0, -200%);
-
+          @media (max-width: 768px) {
+            transform: translate(-200%, 0);
+            &.ani-reverse {
+              transform: translate(200%, 0);
+            }
+          }
           .card-bg {
             opacity: 1;
-            // transform: translate(0, -200%);
           }
         }
 
@@ -4167,30 +4212,6 @@ p {
       }
     }
   }
-}
-
-.color06 {
-  background: linear-gradient(to right, #2d376f, #f2b040);
-}
-
-.color05 {
-  background: linear-gradient(to right, #bb4e9c, #ec195b);
-}
-
-.color04 {
-  background: linear-gradient(to right, #eacc64, #85dffe);
-}
-
-.color03 {
-  background: linear-gradient(to bottom, #e0c3dc, #bd6fad);
-}
-
-.color02 {
-  background: linear-gradient(to right, #fbcf57, #d97791);
-}
-
-.color01 {
-  background: linear-gradient(to bottom, #fff2ef, #f6998d);
 }
 
 .bar-container {

@@ -1,92 +1,145 @@
+var isPC = $(window).width() > 768;
+var isMd = $(window).width() <= 768;
+
 $(function () {
-  var controller = new ScrollMagic.Controller({
-    vertical: false,
-  });
-
-  var base = 6;
-  var count = 5;
-  var ratio = 1.02;
-  var $centerEle = $(".card").eq(Math.floor($(".card").length / 2));
-  $(".card").bind("mouseover", function (e) {
-    cardAnimation($(this));
-  });
-
-  $(".card").bind("mouseleave", function (e) {
+  $(".card-container").each(function (idx, obj) {
+    var $cards = $(obj).find(".card");
+    var $centerEle = $cards.eq(Math.floor($cards.length / 2));
+    $cards.bind("mouseover", function (e) {
+      cardAnimation($(this));
+    });
+    $cards.bind("mouseleave", function (e) {
+      cardAnimation($centerEle);
+    });
     cardAnimation($centerEle);
+    function cardAnimation($el) {
+      var $nextEles = $el.nextAll();
+      var $prevEles = $el.prevAll();
+      $(".card-wrap").attr("style", "");
+      $(".card").attr("style", "");
+
+      $el.css({
+        zIndex: 99,
+      });
+
+      if (isPC) {
+        var base = 6;
+        var count = 5;
+        var ratio = 1.02;
+        TweenMax.to($el.find(".card-wrap"), 0.3, {
+          transformOrigin: "center center",
+          rotationY: 0,
+          scaleX: 0.5,
+        });
+        $prevEles.each(function (idx, ele) {
+          $(ele).css({
+            zIndex: $prevEles.length - idx,
+          });
+          var $wrap = $(ele).find(".card-wrap");
+          if (idx < count) {
+            var tIndex = count - idx;
+            TweenMax.to($wrap, 0.3, {
+              transformOrigin: "left",
+              rotationY: tIndex * base * ratio * 1,
+              scaleX: 1,
+            });
+          } else {
+            TweenMax.to($wrap, 0.3, {
+              zIndex: idx,
+              transformOrigin: "left",
+              rotationY: base + "deg",
+              scaleX: 1,
+            });
+          }
+        });
+
+        $nextEles.each(function (idx, ele) {
+          var $wrap = $(ele).find(".card-wrap");
+          $(ele).css({
+            zIndex: $nextEles.length - idx,
+          });
+          if (idx < count) {
+            var tIndex = count - idx;
+            TweenMax.to($wrap, 0.3, {
+              transformOrigin: "right",
+              rotationY: tIndex * base * ratio * -1,
+              scaleX: 1,
+            });
+          } else {
+            TweenMax.to($wrap, 0.3, {
+              zIndex: idx,
+              transformOrigin: "right",
+              rotationY: base * -1,
+              scaleX: 1,
+            });
+          }
+        });
+      } else {
+        var base = 24;
+        var count = 3;
+        var ratio = 0.8;
+        // Mobile
+        TweenMax.to($el.find(".card-wrap"), 0.3, {
+          transformOrigin: "center center",
+          rotationX: 0,
+          scaleY: 0.4,
+        });
+        $prevEles.each(function (idx, ele) {
+          $(ele).css({
+            zIndex: $prevEles.length - idx,
+          });
+          var $wrap = $(ele).find(".card-wrap");
+          if (idx < count) {
+            var tIndex = count - idx;
+            TweenMax.to($wrap, 0.3, {
+              transformOrigin: "bottom",
+              rotationX: tIndex * base * ratio * -1,
+              scaleX: 1,
+            });
+          } else {
+            TweenMax.to($wrap, 0.3, {
+              zIndex: idx,
+              transformOrigin: "bottom",
+              rotationX: base * -1,
+              scaleX: 1,
+            });
+          }
+        });
+        $nextEles.each(function (idx, ele) {
+          var $wrap = $(ele).find(".card-wrap");
+          // const zIndex = $nextEles.length - idx;
+          $(ele).css({
+            zIndex: $nextEles.length - idx,
+          });
+          if (idx < count) {
+            var tIndex = count - idx;
+            TweenMax.to($wrap, 0.3, {
+              transformOrigin: "bottom",
+              rotationX: tIndex * base * ratio,
+              scaleY: 1,
+            });
+          } else {
+            TweenMax.to($wrap, 0.3, {
+              zIndex: idx,
+              transformOrigin: "bottom",
+              rotationX: base,
+              scaleY: 1,
+            });
+          }
+        });
+      }
+    }
   });
-
-  cardAnimation($centerEle);
-
-  function cardAnimation($el) {
-    var $nextEles = $el.nextAll();
-    var $prevEles = $el.prevAll();
-    $(".card-wrap").attr("style", "");
-    $(".card").attr("style", "");
-
-    $el.css({
-      zIndex: 99,
-    });
-
-    TweenMax.to($el.find(".card-wrap"), 0.3, {
-      transformOrigin: "center center",
-      rotationY: 0,
-      scaleX: 0.5,
-    });
-
-    $nextEles.each(function (idx, ele) {
-      var $wrap = $(ele).find(".card-wrap");
-      // const zIndex = $nextEles.length - idx;
-      $(ele).css({
-        zIndex: $nextEles.length - idx,
-      });
-      if (idx < count) {
-        var tIndex = count - idx;
-        TweenMax.to($wrap, 0.3, {
-          transformOrigin: "right",
-          rotationY: tIndex * base * ratio * -1,
-          scaleX: 1,
-        });
-      } else {
-        TweenMax.to($wrap, 0.3, {
-          zIndex: idx,
-          transformOrigin: "right",
-          rotationY: base * -1,
-          scaleX: 1,
-        });
-      }
-    });
-
-    $prevEles.each(function (idx, ele) {
-      $(ele).css({
-        zIndex: $prevEles.length - idx,
-      });
-      var $wrap = $(ele).find(".card-wrap");
-      if (idx < count) {
-        var tIndex = count - idx;
-        TweenMax.to($wrap, 0.3, {
-          transformOrigin: "left",
-          rotationY: tIndex * base * ratio * 1,
-          scaleX: 1,
-        });
-      } else {
-        TweenMax.to($wrap, 0.3, {
-          zIndex: idx,
-          transformOrigin: "left",
-          rotationY: base + "deg",
-          scaleX: 1,
-        });
-      }
-    });
-  }
 });
 
 $(function () {
   $("body").bind("wheel", function (e) {
-    var distance = e.originalEvent.wheelDeltaY * -1 * 3;
+    var distance = e.originalEvent.wheelDeltaY * -1 * 4;
     var scrollLeft = $("body").scrollLeft();
+
     TweenMax.to(
       $("body")[0],
-      0.9,
+      1.2,
       {
         scrollLeft: scrollLeft + distance,
       },
@@ -100,111 +153,86 @@ $(function () {
 
       var $titles = $(".vertical-title");
 
-      function getTotalLeft() {
-        var arr = [];
-        var pos = [];
-        var nowLeft = $(".index-header").width() + 4;
-        var $temp = $titles.get();
-        $temp.forEach(function (ele, idx) {
-          var $ele = $(ele);
-          var $wrap = $ele.find(".title-wrap");
-          var w = $ele.width();
-          var elemLeft = $ele.offset().left;
-          var viewLeft = scrollLeft + nowLeft;
-          if (elemLeft <= viewLeft) {
-            arr.push({
-              idx: idx,
-              el: $wrap,
-            });
-            pos.push(nowLeft);
-            nowLeft += w - 20;
-          }
-        });
-        var list = arr.map(function (o, idx) {
-          return {
-            pos: "left",
-            idx: o.idx,
-            el: o.el,
-            left: pos[idx],
-            isLast: idx === 0,
-          };
-        });
-        return {
-          totalRight: nowLeft,
-          list: list,
-        };
-      }
+      var prefix = 20;
+      function getTotal() {
+        var titleList = $(".vertical-title").get();
+        var arr1 = [];
+        var arr2 = [];
+        var arr3 = [];
+        var stackLeft = 0;
+        var stackRight = 0;
 
-      function getTotalRight() {
         var arr = [];
-        var pos = [];
-        var nowRight = 0;
-        var $temp = $titles.get().reverse();
-        $temp.forEach(function (ele, idx) {
+        var leftArr = [];
+        var otherArr = [];
+
+        titleList.forEach(function (ele, idx) {
           var $ele = $(ele);
           var $wrap = $ele.find(".title-wrap");
           var w = $ele.width();
           var left = $ele.offset().left;
-          var eleRight = left + w;
-          var viewRight = scrollLeft + $(window).width() - nowRight;
+          var elemLeft = $ele.offset().left;
+          var fixedLeft = stackLeft + $(".index-header").width();
+          var viewLeft = scrollLeft + fixedLeft;
+          if (elemLeft <= viewLeft) {
+            leftArr.push($ele);
+            stackLeft += w - prefix;
+            arr.push({
+              el: $wrap,
+              pos: "left",
+              left: fixedLeft,
+              isMask: idx === 0,
+            });
+          } else {
+            otherArr.unshift($ele);
+          }
+        });
+
+        otherArr.forEach(function (ele, i) {
+          var $ele = $(ele);
+          var $wrap = $ele.find(".title-wrap");
+          var w = $ele.width();
+
+          var elemLeft = $ele.offset().left;
+          var eleRight = elemLeft + w;
+          var fixedRight = $(window).width() - stackRight;
+          var viewRight = scrollLeft + fixedRight;
+
           if (eleRight >= viewRight) {
             arr.push({
-              idx: $temp.length - idx - 1,
               el: $wrap,
+              pos: "left",
+              left: $(window).width() - stackRight - w,
             });
-            pos.push(nowRight);
-            nowRight += w - 20;
+            stackRight += w - prefix;
+          } else {
+            arr.push({
+              el: $wrap,
+              pos: "none",
+              right: stackRight,
+            });
           }
         });
-        var list = arr.map(function (o, idx) {
-          return {
-            pos: "right",
-            idx: o.idx,
-            el: o.el,
-            right: pos[idx],
-            isLast: idx > 0 && idx === arr.length - 1,
-          };
-        });
-        return {
-          totalRight: nowRight,
-          list: list,
-        };
-      }
 
-      var listLeft = getTotalLeft().list;
-      var listRight = getTotalRight().list;
-
-      var list = [...listLeft, ...listRight];
-      $titles.each(function (idx, ele) {
-        var $el = $(ele).find(".title-wrap");
-        var obj = list.find((o) => o.idx === idx);
-        if (obj) {
-          if (obj.pos === "left") {
+        arr.forEach(function (o, i) {
+          var $el = $(o.el);
+          if (!$el.length) return;
+          if (o.isMask) {
+            $el.addClass("is-mask");
+          }
+          if (o.pos === "left") {
             $el.addClass("fixed-left");
-            $el.css({
-              // position: "fixed",
-              left: obj.left,
-              right: "",
-            });
-          } else if (obj.pos === "right") {
+            $el.css({ position: "fixed", left: o.left });
+          } else if (o.pos === "right") {
             $el.addClass("fixed-right");
-            $el.css({
-              // position: "fixed",
-              right: "",
-              left: "",
-            });
+            $el.css({ position: "fixed", right: o.right });
+          } else {
+            $el.removeClass("fixed-left fixed-right is-mask");
+            $el.css({ position: "relative", right: "", left: "" });
           }
-          if (obj.isLast) {
-            $el.addClass("is-last");
-          }
-        } else {
-          $el.removeClass("fixed-left fixed-right is-last");
-          $el.css({
-            left: "",
-            right: "",
-          });
-        }
-      });
+        });
+      }
+      getTotal();
     })
     .trigger("scroll");
 
@@ -271,9 +299,6 @@ $(function () {
         if ($(window).width() <= 768) {
           var top = $el.offset().top;
           var bottom = top + $el.height();
-          if ($el.parents(".wrapper-m").eq(0).length) {
-            console.log("i", scrollTop, "top", top);
-          }
 
           if (scrollTop >= top - trigger && bottom > scrollTop) {
             $el.addClass("animated");
@@ -367,69 +392,3 @@ $(function () {
     $(".first_page").addClass("active");
   }, 3000);
 });
-
-var base = 24;
-var count = 3;
-var ratio = 0.8;
-var $centerEle = $(".bar").eq(Math.floor($(".bar").length / 2));
-barAnimation($centerEle);
-
-function barAnimation($el) {
-  var $nextEles = $el.nextAll();
-  var $prevEles = $el.prevAll();
-  $(".bar-wrap").attr("style", "");
-  $(".bar").attr("style", "");
-
-  $el.css({
-    zIndex: 99,
-  });
-
-  TweenMax.to($el.find(".bar-wrap"), 0.3, {
-    transformOrigin: "center center",
-    rotationX: 0,
-    scaleY: 0.4,
-  });
-  $prevEles.each(function (idx, ele) {
-    $(ele).css({
-      zIndex: $prevEles.length - idx,
-    });
-    var $wrap = $(ele).find(".bar-wrap");
-    if (idx < count) {
-      var tIndex = count - idx;
-      TweenMax.to($wrap, 0.3, {
-        transformOrigin: "bottom",
-        rotationX: tIndex * base * ratio * -1,
-        scaleX: 1,
-      });
-    } else {
-      TweenMax.to($wrap, 0.3, {
-        zIndex: idx,
-        transformOrigin: "bottom",
-        rotationX: base * -1,
-        scaleX: 1,
-      });
-    }
-  });
-  $nextEles.each(function (idx, ele) {
-    var $wrap = $(ele).find(".bar-wrap");
-    // const zIndex = $nextEles.length - idx;
-    $(ele).css({
-      zIndex: $nextEles.length - idx,
-    });
-    if (idx < count) {
-      var tIndex = count - idx;
-      TweenMax.to($wrap, 0.3, {
-        transformOrigin: "bottom",
-        rotationX: tIndex * base * ratio,
-        scaleY: 1,
-      });
-    } else {
-      TweenMax.to($wrap, 0.3, {
-        zIndex: idx,
-        transformOrigin: "bottom",
-        rotationX: base,
-        scaleY: 1,
-      });
-    }
-  });
-}
