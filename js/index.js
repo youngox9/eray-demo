@@ -345,9 +345,6 @@ $(function () {
     );
   });
 
-  var $topEl = $(".top_btn");
-  var oriTopElBottom = parseInt($topEl.css("bottom"), 10);
-
   $(".drop-down-title").on("click", function () {
     $(this).toggleClass("active");
     $(".drop-down-content").toggleClass("open");
