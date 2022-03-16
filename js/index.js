@@ -200,7 +200,7 @@ $(function () {
       var $wrap = $ele.find(".title-wrap");
       var w = $ele.width();
 
-      var elemLeft = $ele.offset().left;
+      var elemLeft = scrollLeft + $ele.offset().left;
       var eleRight = elemLeft + w;
       var fixedRight = $(window).width() - stackRight;
       var viewRight = scrollLeft + fixedRight;
@@ -244,12 +244,15 @@ $(function () {
   $(window).bind("resize", onScroll).trigger("resize");
 
   $(".title-wrap").click(function () {
-    var pos =
+    var scrollLeft = $("body").scrollLeft();
+    var elemLeft =
+      scrollLeft +
       $(this).parents(".vertical-title").eq(0).offset().left +
       $(".vertical-scroll")[0].scrollLeft;
+
     $("body").stop().animate(
       {
-        scrollLeft: pos,
+        scrollLeft: elemLeft,
       },
       1000
     );
