@@ -3,6 +3,9 @@ var isPC = function () {
 };
 var isMd = $(window).width() <= 768;
 
+var stackLeft = 0;
+var stackRight = 0;
+
 $(function () {
   function cardAnimation($el) {
     var $nextEles = $el.nextAll();
@@ -167,8 +170,8 @@ $(function () {
     var scrollLeft = $("body").scrollLeft();
     var prefix = 20;
     var titleList = $(".vertical-title").get();
-    var stackLeft = 0;
-    var stackRight = 0;
+    stackLeft = 0;
+    stackRight = 0;
 
     var arr = [];
     var leftArr = [];
@@ -325,6 +328,22 @@ $(function () {
           }
         }
       });
+    })
+    .trigger("scroll");
+
+  $("body")
+    .bind("scroll", function () {
+      var $firstBlock = $(".vertical-block").eq(0);
+      var scrollLeft = $("body").scrollLeft();
+      var viewRight = scrollLeft + $(window).width();
+      var elemRight =
+        scrollLeft + $firstBlock.offset().left + $firstBlock.width();
+
+      if (elemRight > viewRight) {
+        $(".scroll-right").addClass("fixed");
+      } else {
+        $(".scroll-right").removeClass("fixed");
+      }
     })
     .trigger("scroll");
 
