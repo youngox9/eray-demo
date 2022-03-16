@@ -335,17 +335,26 @@ $(function () {
     .bind("scroll", function () {
       var $firstBlock = $(".vertical-block").eq(0);
       var scrollLeft = $("body").scrollLeft();
-      var viewRight = scrollLeft + $(window).width();
+      var viewRight = scrollLeft + $(window).width() - stackRight;
       var elemRight =
         scrollLeft + $firstBlock.offset().left + $firstBlock.width();
 
       if (elemRight > viewRight) {
+        $(".scroll-right").css({ right: stackRight });
         $(".scroll-right").addClass("fixed");
       } else {
+        $(".scroll-right").css({ right: "" });
         $(".scroll-right").removeClass("fixed");
       }
     })
     .trigger("scroll");
+
+  $(".scroll-right").click(function (e) {
+    e.preventDefault();
+    var $firstBlock = $(".vertical-block").eq(1);
+    var left = $(".index-header").width() + $firstBlock.offset().left;
+    $("body").animate({ scrollLeft: left }, 700);
+  });
 
   $(".top_btn").click(function (event) {
     event.preventDefault();

@@ -18315,9 +18315,10 @@ p {
 .scroll-right {
   position: absolute;
   bottom: 6%;
-  right: 260px;
-  width: 120px;
+  right: 0;
+  width: 100px;
   z-index: 2;
+  margin-right: 24px;
 }
 
 .scroll-right.fixed {
