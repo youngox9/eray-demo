@@ -16280,37 +16280,37 @@ body {
 }
 
 html {
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  border: 4px solid #fff;
+  border-bottom: none;
+  border-radius: 15px 15px 0 0;
   height: 100vh;
-  width: auto;
+  width: 100%;
   overflow: hidden;
   overflow-x: auto;
 }
 
 @media (max-width: 1024px) {
-  html {
+  body {
     overflow: hidden;
     overflow-y: auto;
-    height: initial;
+    height: 100%;
   }
 }
 
-html::-webkit-scrollbar {
+body::-webkit-scrollbar {
   height: 4px;
   width: 4px;
   background-color: white;
 }
 
-html::-webkit-scrollbar-thumb:horizontal {
-  background-color: #1a1a1a;
-  border-radius: 10px;
-}
-
-@media (max-width: 1024px) {
-  body {
-    border: 3px solid #fff;
-    border-bottom: none;
-    border-radius: 15px 15px 0 0;
-  }
+body::-webkit-scrollbar-thumb:horizontal {
+  background-color: #646464;
+  border-radius: 100%;
 }
 
 .wow:not(.animated) {
@@ -16411,7 +16411,7 @@ p {
 
 .vertical-scroll > .vertical-block,
 .vertical-scroll > .vertical-title {
-  margin: 0 -4px;
+  margin: 0 -4px 0 0;
 }
 
 .vertical-scroll > .vertical-block:first-child,
@@ -16424,7 +16424,6 @@ p {
   vertical-align: top;
   display: inline-block;
   height: 100%;
-  border-top: 4px solid #fff;
   margin-right: -18px;
 }
 
@@ -16437,6 +16436,7 @@ p {
   min-width: 3vw;
   color: #fff;
   cursor: pointer;
+  margin: -4px 0;
 }
 
 .vertical-scroll .vertical-title,
@@ -16476,13 +16476,11 @@ p {
   content: "";
   position: absolute;
   z-index: 1;
-  top: 0;
+  top: 4px;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 8px);
   background-color: #1a1a1a;
-  border-top: 4px solid white;
-  border-bottom: 4px solid white;
 }
 
 .vertical-scroll .vertical-title .title-wrap:after {
@@ -16773,8 +16771,13 @@ p {
   z-index: 99;
   height: 100%;
   background-color: #fff;
-  padding: 3.5px 0 0px 4px;
   z-index: 999;
+}
+
+@media (min-width: 1600px) {
+  .index-header {
+    width: 70px;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -16782,13 +16785,6 @@ p {
     position: fixed;
     height: 85px;
     width: 100%;
-    padding: 3px 3px 0;
-  }
-}
-
-@media (min-width: 1600px) {
-  .index-header {
-    width: 70px;
   }
 }
 
@@ -16800,11 +16796,15 @@ p {
   display: flex;
   -ms-flex-direction: column;
       flex-direction: column;
+  border: 4px solid white;
+  border-right: 0;
 }
 
 @media (max-width: 1024px) {
   .index-header .header-content {
     border-radius: 15px 15px 0 0;
+    border: 4px solid white;
+    border-right: 4px solid white;
   }
 }
 
@@ -16818,6 +16818,7 @@ p {
     border-bottom: none;
     border-radius: 15px 15px 0 0;
     transform: translateX(-4px);
+    display: none;
   }
 }
 
@@ -16870,8 +16871,8 @@ p {
   .index-header .header-content .hamburger-btn-l {
     height: 70px;
     padding: 37px 0;
-    right: 0;
-    top: 35px;
+    right: 12px;
+    top: 42px;
   }
 }
 

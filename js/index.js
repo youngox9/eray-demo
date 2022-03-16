@@ -1,4 +1,6 @@
-var isPC = $(window).width() > 768;
+var isPC = function () {
+  return $(window).width() > 768;
+};
 var isMd = $(window).width() <= 768;
 
 $(function () {
@@ -12,7 +14,7 @@ $(function () {
       zIndex: 99,
     });
 
-    if (isPC) {
+    if (isPC()) {
       var base = 6;
       var count = 5;
       var ratio = 1.02;
@@ -21,6 +23,7 @@ $(function () {
         rotationY: 0,
         rotationX: 0,
         scaleX: 0.5,
+        scaleY: 1,
       });
       $prevEles.each(function (idx, ele) {
         $(ele).css({
@@ -78,6 +81,7 @@ $(function () {
         transformOrigin: "center center",
         rotationX: 0,
         scaleY: 0.4,
+        scaleX: 1,
       });
       $prevEles.each(function (idx, ele) {
         $(ele).css({
@@ -141,11 +145,7 @@ $(function () {
     });
   }
 
-  $(window)
-    .bind("resize", function () {
-      bindCard();
-    })
-    .trigger("resize");
+  $(window).bind("resize", bindCard).trigger("resize");
 });
 
 $(function () {
@@ -178,8 +178,7 @@ $(function () {
       var $ele = $(ele);
       var $wrap = $ele.find(".title-wrap");
       var w = $ele.width();
-      var left = $ele.offset().left;
-      var elemLeft = $ele.offset().left;
+      var elemLeft = scrollLeft + $ele.offset().left;
       var fixedLeft = stackLeft + $(".index-header").width();
       var viewLeft = scrollLeft + fixedLeft;
       if (elemLeft <= viewLeft) {
@@ -241,12 +240,8 @@ $(function () {
     });
   }
 
-  $(window)
-    .bind("scroll", function (e) {
-      // console.log(e);
-      onScroll();
-    })
-    .trigger("scroll");
+  $("body").bind("scroll resize", onScroll).trigger("scroll");
+  $(window).bind("resize", onScroll).trigger("resize");
 
   $(".title-wrap").click(function () {
     var pos =
@@ -260,31 +255,31 @@ $(function () {
     );
   });
 
-  $(window)
+  $("body")
     .bind("scroll", function (e) {
       var scrollLeft = $("body").scrollLeft();
       var scrollTop = $("body").scrollTop();
       var $wow = $(".wow");
       $wow.each(function (i, el) {
         var $el = $(el);
-        if ($(window).width() <= 768) {
-          var viewTop = scrollTop;
-          var viewBottom = scrollTop + $(window).height();
-          var top = $el.offset().top;
-          var bottom = $el.offset().left + $el.width();
-          if (bottom >= viewTop && top <= viewBottom) {
+        if (isPC()) {
+          var viewLeft = scrollLeft;
+          var viewRight = scrollLeft + $(window).width() * 0.8;
+
+          var left = scrollLeft + $el.offset().left;
+          var right = left + $el.width();
+
+          if (right >= viewLeft && left <= viewRight) {
             $el.addClass("animated");
           } else {
             $el.removeClass("animated");
           }
         } else {
-          var viewLeft = scrollLeft;
-          var viewRight = scrollLeft + $(window).width() * 0.8;
-
-          var left = $el.offset().left;
-          var right = $el.offset().left + $el.width();
-
-          if (right >= viewLeft && left <= viewRight) {
+          var viewTop = scrollTop;
+          var viewBottom = scrollTop + $(window).height();
+          var top = scrollTop + $el.offset().top;
+          var bottom = top + $el.width();
+          if (bottom >= viewTop && top <= viewBottom) {
             $el.addClass("animated");
           } else {
             $el.removeClass("animated");
@@ -294,7 +289,7 @@ $(function () {
     })
     .trigger("scroll");
 
-  $(window)
+  $("body")
     .bind("scroll", function (e) {
       var scrollLeft = $("body").scrollLeft();
       var scrollTop = $("body").scrollTop() + $(".index-header").height();
@@ -308,19 +303,19 @@ $(function () {
             : $(window).width() * parseFloat(triggerText)
           : 0;
 
-        if ($(window).width() <= 768) {
-          var top = $el.offset().top;
-          var bottom = top + $el.height();
-
-          if (scrollTop >= top - trigger && bottom > scrollTop) {
+        if (isPC()) {
+          var left = scrollLeft + $el.offset().left;
+          var right = left + $el.width();
+          if (scrollLeft > left - trigger && right > scrollLeft) {
             $el.addClass("animated");
           } else {
             $el.removeClass("animated");
           }
         } else {
-          var left = $el.offset().left;
-          var right = left + $el.width();
-          if (scrollLeft > left - trigger && right > scrollLeft) {
+          var top = scrollTop + $el.offset().top;
+          var bottom = top + $el.height();
+
+          if (scrollTop >= top - trigger && bottom > scrollTop) {
             $el.addClass("animated");
           } else {
             $el.removeClass("animated");
