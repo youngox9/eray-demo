@@ -351,8 +351,10 @@ $(function () {
 
   $(".scroll-right").click(function (e) {
     e.preventDefault();
+    var scrollLeft = $("body").scrollLeft();
     var $firstBlock = $(".vertical-block").eq(1);
-    var left = $(".index-header").width() + $firstBlock.offset().left;
+    var left =
+      scrollLeft + $(".index-header").width() + $firstBlock.offset().left;
     $("body").animate({ scrollLeft: left }, 700);
   });
 
