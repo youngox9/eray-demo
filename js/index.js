@@ -2,134 +2,150 @@ var isPC = $(window).width() > 768;
 var isMd = $(window).width() <= 768;
 
 $(function () {
-  $(".card-container").each(function (idx, obj) {
-    var $cards = $(obj).find(".card");
-    var $centerEle = $cards.eq(Math.floor($cards.length / 2));
-    $cards.bind("mouseover", function (e) {
-      cardAnimation($(this));
-    });
-    $cards.bind("mouseleave", function (e) {
-      cardAnimation($centerEle);
-    });
-    cardAnimation($centerEle);
-    function cardAnimation($el) {
-      var $nextEles = $el.nextAll();
-      var $prevEles = $el.prevAll();
-      $(".card-wrap").attr("style", "");
-      $(".card").attr("style", "");
+  function cardAnimation($el) {
+    var $nextEles = $el.nextAll();
+    var $prevEles = $el.prevAll();
+    $(".card-wrap").attr("style", "");
+    $(".card").attr("style", "");
 
-      $el.css({
-        zIndex: 99,
+    $el.css({
+      zIndex: 99,
+    });
+
+    if (isPC) {
+      var base = 6;
+      var count = 5;
+      var ratio = 1.02;
+      TweenMax.to($el.find(".card-wrap"), 0.3, {
+        transformOrigin: "center center",
+        rotationY: 0,
+        rotationX: 0,
+        scaleX: 0.5,
+      });
+      $prevEles.each(function (idx, ele) {
+        $(ele).css({
+          zIndex: $prevEles.length - idx,
+        });
+        var $wrap = $(ele).find(".card-wrap");
+        if (idx < count) {
+          var tIndex = count - idx;
+          TweenMax.to($wrap, 0.3, {
+            transformOrigin: "left",
+            rotationY: tIndex * base * ratio * 1,
+            rotationX: 0,
+            scaleX: 1,
+          });
+        } else {
+          TweenMax.to($wrap, 0.3, {
+            zIndex: idx,
+            transformOrigin: "left",
+            rotationY: base + "deg",
+            rotationX: 0,
+            scaleX: 1,
+          });
+        }
       });
 
-      if (isPC) {
-        var base = 6;
-        var count = 5;
-        var ratio = 1.02;
-        TweenMax.to($el.find(".card-wrap"), 0.3, {
-          transformOrigin: "center center",
-          rotationY: 0,
-          scaleX: 0.5,
+      $nextEles.each(function (idx, ele) {
+        var $wrap = $(ele).find(".card-wrap");
+        $(ele).css({
+          zIndex: $nextEles.length - idx,
         });
-        $prevEles.each(function (idx, ele) {
-          $(ele).css({
-            zIndex: $prevEles.length - idx,
+        if (idx < count) {
+          var tIndex = count - idx;
+          TweenMax.to($wrap, 0.3, {
+            transformOrigin: "right",
+            rotationY: tIndex * base * ratio * -1,
+            rotationX: 0,
+            scaleX: 1,
           });
-          var $wrap = $(ele).find(".card-wrap");
-          if (idx < count) {
-            var tIndex = count - idx;
-            TweenMax.to($wrap, 0.3, {
-              transformOrigin: "left",
-              rotationY: tIndex * base * ratio * 1,
-              scaleX: 1,
-            });
-          } else {
-            TweenMax.to($wrap, 0.3, {
-              zIndex: idx,
-              transformOrigin: "left",
-              rotationY: base + "deg",
-              scaleX: 1,
-            });
-          }
-        });
-
-        $nextEles.each(function (idx, ele) {
-          var $wrap = $(ele).find(".card-wrap");
-          $(ele).css({
-            zIndex: $nextEles.length - idx,
+        } else {
+          TweenMax.to($wrap, 0.3, {
+            zIndex: idx,
+            transformOrigin: "right",
+            rotationY: base * -1,
+            rotationX: 0,
+            scaleX: 1,
           });
-          if (idx < count) {
-            var tIndex = count - idx;
-            TweenMax.to($wrap, 0.3, {
-              transformOrigin: "right",
-              rotationY: tIndex * base * ratio * -1,
-              scaleX: 1,
-            });
-          } else {
-            TweenMax.to($wrap, 0.3, {
-              zIndex: idx,
-              transformOrigin: "right",
-              rotationY: base * -1,
-              scaleX: 1,
-            });
-          }
+        }
+      });
+    } else {
+      var base = 24;
+      var count = 3;
+      var ratio = 0.8;
+      // Mobile
+      TweenMax.to($el.find(".card-wrap"), 0.3, {
+        transformOrigin: "center center",
+        rotationX: 0,
+        scaleY: 0.4,
+      });
+      $prevEles.each(function (idx, ele) {
+        $(ele).css({
+          zIndex: $prevEles.length - idx,
         });
-      } else {
-        var base = 24;
-        var count = 3;
-        var ratio = 0.8;
-        // Mobile
-        TweenMax.to($el.find(".card-wrap"), 0.3, {
-          transformOrigin: "center center",
-          rotationX: 0,
-          scaleY: 0.4,
-        });
-        $prevEles.each(function (idx, ele) {
-          $(ele).css({
-            zIndex: $prevEles.length - idx,
+        var $wrap = $(ele).find(".card-wrap");
+        if (idx < count) {
+          var tIndex = count - idx;
+          TweenMax.to($wrap, 0.3, {
+            transformOrigin: "bottom",
+            rotationX: tIndex * base * ratio * -1,
+            rotationY: 0,
+            scaleX: 1,
           });
-          var $wrap = $(ele).find(".card-wrap");
-          if (idx < count) {
-            var tIndex = count - idx;
-            TweenMax.to($wrap, 0.3, {
-              transformOrigin: "bottom",
-              rotationX: tIndex * base * ratio * -1,
-              scaleX: 1,
-            });
-          } else {
-            TweenMax.to($wrap, 0.3, {
-              zIndex: idx,
-              transformOrigin: "bottom",
-              rotationX: base * -1,
-              scaleX: 1,
-            });
-          }
-        });
-        $nextEles.each(function (idx, ele) {
-          var $wrap = $(ele).find(".card-wrap");
-          // const zIndex = $nextEles.length - idx;
-          $(ele).css({
-            zIndex: $nextEles.length - idx,
+        } else {
+          TweenMax.to($wrap, 0.3, {
+            zIndex: idx,
+            transformOrigin: "bottom",
+            rotationX: base * -1,
+            rotationY: 0,
+            scaleX: 1,
           });
-          if (idx < count) {
-            var tIndex = count - idx;
-            TweenMax.to($wrap, 0.3, {
-              transformOrigin: "bottom",
-              rotationX: tIndex * base * ratio,
-              scaleY: 1,
-            });
-          } else {
-            TweenMax.to($wrap, 0.3, {
-              zIndex: idx,
-              transformOrigin: "bottom",
-              rotationX: base,
-              scaleY: 1,
-            });
-          }
+        }
+      });
+      $nextEles.each(function (idx, ele) {
+        var $wrap = $(ele).find(".card-wrap");
+        $(ele).css({
+          zIndex: $nextEles.length - idx,
         });
-      }
+        if (idx < count) {
+          var tIndex = count - idx;
+          TweenMax.to($wrap, 0.3, {
+            transformOrigin: "bottom",
+            rotationX: tIndex * base * ratio,
+            rotationY: 0,
+            scaleY: 1,
+          });
+        } else {
+          TweenMax.to($wrap, 0.3, {
+            zIndex: idx,
+            transformOrigin: "bottom",
+            rotationX: base,
+            rotationY: 0,
+            scaleY: 1,
+          });
+        }
+      });
     }
-  });
+  }
+  function bindCard() {
+    $(".card-container").each(function (idx, obj) {
+      var $cards = $(obj).find(".card");
+      var $centerEle = $cards.eq(Math.floor($cards.length / 2));
+      $cards.bind("mouseover", function (e) {
+        cardAnimation($(this));
+      });
+      $cards.bind("mouseleave", function (e) {
+        cardAnimation($centerEle);
+      });
+      cardAnimation($centerEle);
+    });
+  }
+
+  $(window)
+    .bind("resize", function () {
+      bindCard();
+    })
+    .trigger("resize");
 });
 
 $(function () {
@@ -147,92 +163,88 @@ $(function () {
     );
   });
 
-  $(window)
-    .bind("scroll", function (e) {
-      var scrollLeft = $("body").scrollLeft();
+  function onScroll() {
+    var scrollLeft = $("body").scrollLeft();
+    var prefix = 20;
+    var titleList = $(".vertical-title").get();
+    var stackLeft = 0;
+    var stackRight = 0;
 
-      var $titles = $(".vertical-title");
+    var arr = [];
+    var leftArr = [];
+    var otherArr = [];
 
-      var prefix = 20;
-      function getTotal() {
-        var titleList = $(".vertical-title").get();
-        var arr1 = [];
-        var arr2 = [];
-        var arr3 = [];
-        var stackLeft = 0;
-        var stackRight = 0;
-
-        var arr = [];
-        var leftArr = [];
-        var otherArr = [];
-
-        titleList.forEach(function (ele, idx) {
-          var $ele = $(ele);
-          var $wrap = $ele.find(".title-wrap");
-          var w = $ele.width();
-          var left = $ele.offset().left;
-          var elemLeft = $ele.offset().left;
-          var fixedLeft = stackLeft + $(".index-header").width();
-          var viewLeft = scrollLeft + fixedLeft;
-          if (elemLeft <= viewLeft) {
-            leftArr.push($ele);
-            stackLeft += w - prefix;
-            arr.push({
-              el: $wrap,
-              pos: "left",
-              left: fixedLeft,
-              isMask: idx === 0,
-            });
-          } else {
-            otherArr.unshift($ele);
-          }
+    titleList.forEach(function (ele, idx) {
+      var $ele = $(ele);
+      var $wrap = $ele.find(".title-wrap");
+      var w = $ele.width();
+      var left = $ele.offset().left;
+      var elemLeft = $ele.offset().left;
+      var fixedLeft = stackLeft + $(".index-header").width();
+      var viewLeft = scrollLeft + fixedLeft;
+      if (elemLeft <= viewLeft) {
+        leftArr.push($ele);
+        stackLeft += w - prefix;
+        arr.push({
+          el: $wrap,
+          pos: "left",
+          left: fixedLeft,
+          isMask: idx === 0,
         });
+      } else {
+        otherArr.unshift($ele);
+      }
+    });
 
-        otherArr.forEach(function (ele, i) {
-          var $ele = $(ele);
-          var $wrap = $ele.find(".title-wrap");
-          var w = $ele.width();
+    otherArr.forEach(function (ele, i) {
+      var $ele = $(ele);
+      var $wrap = $ele.find(".title-wrap");
+      var w = $ele.width();
 
-          var elemLeft = $ele.offset().left;
-          var eleRight = elemLeft + w;
-          var fixedRight = $(window).width() - stackRight;
-          var viewRight = scrollLeft + fixedRight;
+      var elemLeft = $ele.offset().left;
+      var eleRight = elemLeft + w;
+      var fixedRight = $(window).width() - stackRight;
+      var viewRight = scrollLeft + fixedRight;
 
-          if (eleRight >= viewRight) {
-            arr.push({
-              el: $wrap,
-              pos: "left",
-              left: $(window).width() - stackRight - w,
-            });
-            stackRight += w - prefix;
-          } else {
-            arr.push({
-              el: $wrap,
-              pos: "none",
-              right: stackRight,
-            });
-          }
+      if (eleRight >= viewRight + 1) {
+        arr.push({
+          el: $wrap,
+          pos: "left",
+          left: $(window).width() - stackRight - w,
         });
-
-        arr.forEach(function (o, i) {
-          var $el = $(o.el);
-          if (!$el.length) return;
-          if (o.isMask) {
-            $el.addClass("is-mask");
-          }
-          if (o.pos === "left") {
-            $el.addClass("fixed-left");
-            $el.css({ position: "fixed", left: o.left });
-          } else if (o.pos === "right") {
-            $el.addClass("fixed-right");
-            $el.css({ position: "fixed", right: o.right });
-          } else {
-            $el.removeClass("fixed-left fixed-right is-mask");
-            $el.css({ position: "relative", right: "", left: "" });
-          }
+        stackRight += w - prefix;
+      } else {
+        arr.push({
+          el: $wrap,
+          pos: "none",
+          right: stackRight,
         });
       }
-      getTotal();
+    });
+
+    arr.forEach(function (o, i) {
+      var $el = $(o.el);
+      if (!$el.length) return;
+      if (o.isMask) {
+        $el.addClass("is-mask");
+      }
+      if (o.pos === "left") {
+        $el.addClass("fixed-left");
+        $el.css({ position: "fixed", left: o.left, zIndex: 3 });
+      } else if (o.pos === "right") {
+        $el.addClass("fixed-right");
+        $el.css({ position: "fixed", right: o.right, zIndex: 3 });
+      } else {
+        $el.removeClass("fixed-left fixed-right is-mask");
+        $el.css({ position: "relative", right: "", left: "", zIndex: 1 });
+      }
+    });
+  }
+
+  $(window)
+    .bind("scroll", function (e) {
+      // console.log(e);
+      onScroll();
     })
     .trigger("scroll");
 
