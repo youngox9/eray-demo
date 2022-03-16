@@ -153,12 +153,12 @@ $(function () {
 
 $(function () {
   $("body").bind("wheel", function (e) {
-    var distance = e.originalEvent.wheelDeltaY * -1 * 4;
+    var distance = e.originalEvent.wheelDeltaY * -1 * 3;
     var scrollLeft = $("body").scrollLeft();
 
     TweenMax.to(
       $("body")[0],
-      1.2,
+      0.6,
       {
         scrollLeft: scrollLeft + distance,
       },
